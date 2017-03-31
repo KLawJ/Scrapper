@@ -21,9 +21,9 @@ pdf2txt -t text -o cl.txt $f
 wget $infoURL
 cd ..
 
-$nodeOut=`node processor.js cl.txt smsapi`
+nodeOut=`node processor.js cl.txt smsapi`
 
-if [ $3 == 'TB' ] || [ $2 == 'TB' ]
+if [ "$3" == 'TB' ] || [ "$2" == 'TB' ]
 then
 curl \
 -X POST \
@@ -32,7 +32,7 @@ curl \
 https://api.telegram.org/bot373825778:AAEY4GbXCJvM09x2NICVdiu38JkwnuvoWk8/sendDocument
 fi
 
-if [ $2 == 'SMS' ] || [ $3 == 'SMS' ]
+if [ "$2" == 'SMS' ] || [ "$3" == 'SMS' ]
 then
 curl \
 -X POST \
@@ -48,3 +48,4 @@ echo "Done" > "log/$f"
 echo "Node App Output :-"
 echo $nodeOut
 fi
+
