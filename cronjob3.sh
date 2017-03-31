@@ -22,7 +22,8 @@ wget $infoURL
 cd ..
 npm start
 
-if [ $1 == 'SMS' ] || [ $2 == 'SMS' ] then
+if [ $1 == 'SMS' ] || [ $2 == 'SMS' ]
+then
 curl \
 -X POST \
 --form-string chat_id="@KLJICO" \
@@ -30,7 +31,8 @@ curl \
 https://api.telegram.org/bot373825778:AAEY4GbXCJvM09x2NICVdiu38JkwnuvoWk8/sendDocument
 fi
 
-if [ $1 == 'TB' ] || [ $2 == 'TB' ] then
+if [ $1 == 'TB' ] || [ $2 == 'TB' ]
+then
 curl \
 -X POST \
 -H "Authorization:Basic a2xqaWNvOktsSkljTw==" \
@@ -42,4 +44,5 @@ fi
 
 echo "Done."
 fi
+
 
