@@ -1,0 +1,14 @@
+http://52.38.52.244:9006/home/ubuntu/Scrapper/
+
+requestStatus
+	0	: Recieved
+	1	: Downloaded / Being Processed
+	2	: Insuffient Balance
+	3	: SMS Gateway Issue
+	4	: Executed
+	/sms/jobs/new		=> set to 1
+	/sms/jobs/:id/info
+	/sms/jobs/:id/file
+	/sms/jobs/:id/done/2	=> set to 2
+	/sms/jobs/:id/done/3	=> set to 3
+	/sms/jobs/:id/done/4	=> set to 4

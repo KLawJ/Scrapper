@@ -1,0 +1,7 @@
+/*
+* 00 => Looking for 'IN THE HIGH COURT OF (\w|\s) AT ERNAKULAM'
+* 01 => Looking for 'Wednesday, the 15th March, 2017/24th Phalguna, 1938 at 1.30 PM'
+		==> Scrap 
+*/
+
+http://clists.nic.in/ddir/PDFCauselists/kerala/2017/Mar/01327032017.pdf
