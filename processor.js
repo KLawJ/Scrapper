@@ -194,7 +194,6 @@ function compress(object, reps, judge){
 }
 
 function requestTBtDelivery(number, body){
-    //console.log(number+" : < "+body.substr(0,20)+" ... "+body.substr(body.length-20,body.length)+" >");
     var mmsg = body;
     console.log(
         request(
@@ -285,32 +284,14 @@ function netwrokQuery(findings, reqURL){
 			"Accept" : "application/json"
 		},
 		body : JSON.stringify(findings),
-		//json : true
 	},
 	function(err,httpResponse,body){
 		console.log(JSON.stringify(findings));
 	})
-	/*return request(
-		'POST',
-		url,
-		{
-			"headers":{
-				"Authorization" : "Basic a2xqaWNvOktsSkljTw==",
-				"Content-Type" : "application/json",
-				"Accept" : "application/json"
-			},
-			"body":findings
-		}
-	).getBody('utf8');*/
 }
 
 function main(){
-	
-<<<<<<< HEAD
 	var input = fs.readFileSync('data/'+process.argv[2],'ASCII');
-=======
-	var input = fs.readFileSync('data/process.argv[2]','ASCII');
->>>>>>> 5ea682358fb9954f89869aab930ffea6eb69dfec
 	var pages = input.split(/\t*IN \w* \w* COURT OF \w* AT \w*/g);
 	var allCases = logCases(
 		objectifyPages(
@@ -323,11 +304,7 @@ function main(){
 	)
 	fs.writeFileSync("data/query.log", queryBuilder(allCases));
     var inputInfo = JSON.parse(
-<<<<<<< HEAD
         fs.readFileSync('data/'+process.argv[3],'UTF8')
-=======
-        fs.readFileSync('data/process.argv[3]','UTF8')
->>>>>>> 5ea682358fb9954f89869aab930ffea6eb69dfec
     );
     var findings = findAdvocateCases(
 		allCases,
