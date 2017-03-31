@@ -1,5 +1,6 @@
 rm -R data
 mkdir data
+mkdir log
 host="http://klawj.tk"
 infoURL="$host/smsapi"
 echo $infoURL
@@ -11,27 +12,33 @@ e="http://clists.nic.in/ddir/PDFCauselists/kerala/$c/$d/"
 f="013$a$b.pdf"
 g="$e$f"
 h=`curl -s -o /dev/null -w "%{response_code}" $g`
-if [ $h == '200' ] && [ ! -f $f ]
+if [ $h == '200' ] && [ ! -f "log/$f" ]
 then
-	echo "Done" > $f
+	echo "Done" > "log/$f"
 	cd data
 	wget $g
 	pdf2txt -t text -o cl.txt $f
 	wget $infoURL
 	cd ..
 	npm start
+	
+	if [ $1 == 'SMS' ] || [ $2 == 'SMS' ] then
 	curl \
 	-X POST \
 	--form-string chat_id="@KLJICO" \
 	-F document="@data/smslist.json" \
 	https://api.telegram.org/bot373825778:AAEY4GbXCJvM09x2NICVdiu38JkwnuvoWk8/sendDocument
+	fi
 
-	curl \
-	-X POST \
-	-H "Authorization:Basic a2xqaWNvOktsSkljTw==" \
-	-H "Content-Type:application/json" \
-	-H "Accept:application/json" \
-	--data-ascii "@data/smslist.json" \
-	#https://smsapi.runacorp.com/restapi/sms/1/text/multi
+	if [ $1 == 'TB' ] || [ $2 == 'TB' ] then
+		curl \
+		-X POST \
+		-H "Authorization:Basic a2xqaWNvOktsSkljTw==" \
+		-H "Content-Type:application/json" \
+		-H "Accept:application/json" \
+		--data-ascii "@data/smslist.json" \
+		https://smsapi.runacorp.com/restapi/sms/1/text/multi
+	fi
+	
 	echo "Done."
 fi
