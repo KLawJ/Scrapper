@@ -4,10 +4,10 @@ mkdir log
 host="http://klawj.tk"
 infoURL="$host/smsapi"
 echo $infoURL
-a=`date --date "-13 hours ago" +%d`
-b=`date --date "-13 hours ago" +%m%Y`
-c=`date --date "-13 hours ago" +%Y`
-d=`date --date "-13 hours ago" +%b`
+a=`date --date "-$1 hours ago" +%d`
+b=`date --date "-$1 hours ago" +%m%Y`
+c=`date --date "-$1 hours ago" +%Y`
+d=`date --date "-$1 hours ago" +%b`
 e="http://clists.nic.in/ddir/PDFCauselists/kerala/$c/$d/"
 f="013$a$b.pdf"
 g="$e$f"
@@ -22,7 +22,7 @@ wget $infoURL
 cd ..
 npm start
 
-if [ $1 == 'SMS' ] || [ $2 == 'SMS' ]
+if [ $2 == 'SMS' ] || [ $3 == 'SMS' ]
 then
 curl \
 -X POST \
@@ -31,7 +31,7 @@ curl \
 https://api.telegram.org/bot373825778:AAEY4GbXCJvM09x2NICVdiu38JkwnuvoWk8/sendDocument
 fi
 
-if [ $1 == 'TB' ] || [ $2 == 'TB' ]
+if [ $3 == 'TB' ] || [ $2 == 'TB' ]
 then
 curl \
 -X POST \
@@ -44,5 +44,6 @@ fi
 
 echo "Done."
 fi
+
 
 
