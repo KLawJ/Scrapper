@@ -9,7 +9,7 @@
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node processor3.js cl.txt smsapi"
+    "start": "node processor2.js cl.txt smsapi"
   },
   "keywords": [
     "data",

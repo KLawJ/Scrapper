@@ -14,13 +14,14 @@ g="$e$f"
 h=`curl -s -o /dev/null -w "%{response_code}" $g`
 if [ $h == '200' ] && [ ! -f "log/$f" ]
 then
-echo "Done" > "log/$f"
+
 cd data
 wget $g
 pdf2txt -t text -o cl.txt $f
 wget $infoURL
 cd ..
-npm start
+
+$nodeOut=`node processor.js 3 cl.txt smsapi`
 
 if [ $2 == 'SMS' ] || [ $3 == 'SMS' ]
 then
@@ -43,7 +44,11 @@ https://smsapi.runacorp.com/restapi/sms/1/text/multi
 fi
 
 echo "Done."
+echo "Done" > "log/$f"
+echo "Node App Output :-"
+echo $nodeOut
 fi
+
 
 
 
