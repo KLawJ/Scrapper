@@ -21,7 +21,7 @@ pdf2txt -t text -o cl.txt $f
 wget $infoURL
 cd ..
 
-$nodeOut=`node processor.js 3 cl.txt smsapi`
+$nodeOut=`node processor.js cl.txt smsapi`
 
 if [ $2 == 'SMS' ] || [ $3 == 'SMS' ]
 then
@@ -48,6 +48,7 @@ echo "Done" > "log/$f"
 echo "Node App Output :-"
 echo $nodeOut
 fi
+
 
 
 
