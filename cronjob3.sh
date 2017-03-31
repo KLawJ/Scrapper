@@ -14,31 +14,32 @@ g="$e$f"
 h=`curl -s -o /dev/null -w "%{response_code}" $g`
 if [ $h == '200' ] && [ ! -f "log/$f" ]
 then
-	echo "Done" > "log/$f"
-	cd data
-	wget $g
-	pdf2txt -t text -o cl.txt $f
-	wget $infoURL
-	cd ..
-	npm start
-	
-	if [ $1 == 'SMS' ] || [ $2 == 'SMS' ] then
-	curl \
-	-X POST \
-	--form-string chat_id="@KLJICO" \
-	-F document="@data/smslist.json" \
-	https://api.telegram.org/bot373825778:AAEY4GbXCJvM09x2NICVdiu38JkwnuvoWk8/sendDocument
-	fi
+echo "Done" > "log/$f"
+cd data
+wget $g
+pdf2txt -t text -o cl.txt $f
+wget $infoURL
+cd ..
+npm start
 
-	if [ $1 == 'TB' ] || [ $2 == 'TB' ] then
-		curl \
-		-X POST \
-		-H "Authorization:Basic a2xqaWNvOktsSkljTw==" \
-		-H "Content-Type:application/json" \
-		-H "Accept:application/json" \
-		--data-ascii "@data/smslist.json" \
-		https://smsapi.runacorp.com/restapi/sms/1/text/multi
-	fi
-	
-	echo "Done."
+if [ $1 == 'SMS' ] || [ $2 == 'SMS' ] then
+curl \
+-X POST \
+--form-string chat_id="@KLJICO" \
+-F document="@data/smslist.json" \
+https://api.telegram.org/bot373825778:AAEY4GbXCJvM09x2NICVdiu38JkwnuvoWk8/sendDocument
 fi
+
+if [ $1 == 'TB' ] || [ $2 == 'TB' ] then
+curl \
+-X POST \
+-H "Authorization:Basic a2xqaWNvOktsSkljTw==" \
+-H "Content-Type:application/json" \
+-H "Accept:application/json" \
+--data-ascii "@data/smslist.json" \
+https://smsapi.runacorp.com/restapi/sms/1/text/multi
+fi
+
+echo "Done."
+fi
+
