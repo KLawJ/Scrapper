@@ -3,7 +3,7 @@ host="http://klawj.tk"
 
 while true
 do
-output=`curl $host/smsapi/jobs`
+output=`curl -s $host/smsapi/jobs`
 echo $output
 sleep 5
 done
