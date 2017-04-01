@@ -3,16 +3,18 @@ rm -R "$path/data"
 mkdir "$path/data"
 mkdir "$pathlog"
 host="http://klawj.tk"
-infoURL="$host/smsapi"
 
-h=`curl -s -o /dev/null -w "%{response_code}" $1`
+
+$a=`curl $host/smsapi/job`
+
+h=`curl -s -o /dev/null -w "%{response_code}" $a`
 if [ $h == '200' ] && [ ! -f "log/$f" ]
 then
 
 cd "$path/data"
-wget $1 -O cl.pdf
+wget $a -O cl.pdf
 pdf2txt -t text -o cl.txt cl.pdf
-wget $infoURL -O info.json
+wget $host/smsapi/info -O info.json
 cd ..
 
 nodeOut=`node $path/processor.js cl.txt info.json`
@@ -42,6 +44,7 @@ echo "Done" > "$path/log/$f"
 echo "Node App Output :-"
 echo $nodeOut
 fi
+
 
 
 
