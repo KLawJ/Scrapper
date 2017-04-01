@@ -1,6 +1,6 @@
-$path="/home/ubuntu/Scrapper/"
-rm -R "$pathdata"
-mkdir "$pathdata"
+$path="/home/ubuntu/Scrapper"
+rm -R "$path/data"
+mkdir "$path/data"
 mkdir "$pathlog"
 host="http://klawj.tk"
 infoURL="$host/smsapi"
@@ -16,20 +16,20 @@ h=`curl -s -o /dev/null -w "%{response_code}" $g`
 if [ $h == '200' ] && [ ! -f "log/$f" ]
 then
 
-cd "$pathdata"
+cd "$path/data"
 wget $g
 pdf2txt -t text -o cl.txt $f
 wget $infoURL
 cd ..
 
-nodeOut=`node $pathprocessor.js cl.txt smsapi`
+nodeOut=`node $path/processor.js cl.txt smsapi`
 
 if [ "$3" == 'TB' ] || [ "$2" == 'TB' ]
 then
 curl \
 -X POST \
 --form-string chat_id="@KLJICO" \
--F document="$pathdata/smslist.json" \
+-F document="$path/data/smslist.json" \
 https://api.telegram.org/bot373825778:AAEY4GbXCJvM09x2NICVdiu38JkwnuvoWk8/sendDocument
 fi
 
@@ -40,14 +40,15 @@ curl \
 -H "Authorization:Basic a2xqaWNvOktsSkljTw==" \
 -H "Content-Type:application/json" \
 -H "Accept:application/json" \
---data-ascii "$pathdata/smslist.json" \
+--data-ascii "$path/data/smslist.json" \
 https://smsapi.runacorp.com/restapi/sms/1/text/multi
 fi
 
 echo "Done."
-echo "Done" > "$pathlog/$f"
+echo "Done" > "$path/log/$f"
 echo "Node App Output :-"
 echo $nodeOut
 fi
+
 
 
