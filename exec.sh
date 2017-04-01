@@ -4,27 +4,18 @@ mkdir "$path/data"
 mkdir "$pathlog"
 host="http://klawj.tk"
 infoURL="$host/smsapi"
-echo $infoURL
-a=`date --date "-$1 hours ago" +%d`
-b=`date --date "-$1 hours ago" +%m%Y`
-c=`date --date "-$1 hours ago" +%Y`
-d=`date --date "-$1 hours ago" +%b`
-echo "$a:$b:$c:$d"
-e="http://clists.nic.in/ddir/PDFCauselists/kerala/$c/$d/"
-f="013$a$b.pdf"
-g="$e$f"
-echo "$g"
-h=`curl -s -o /dev/null -w "%{response_code}" $g`
+
+h=`curl -s -o /dev/null -w "%{response_code}" $1`
 if [ $h == '200' ] && [ ! -f "log/$f" ]
 then
 
 cd "$path/data"
-wget $g
-pdf2txt -t text -o cl.txt $f
-wget $infoURL
+wget $1 -O cl.pdf
+pdf2txt -t text -o cl.txt cl.pdf
+wget $infoURL -O info.json
 cd ..
 
-nodeOut=`node $path/processor.js cl.txt smsapi`
+nodeOut=`node $path/processor.js cl.txt info.json`
 
 if [ "$3" == 'TB' ] || [ "$2" == 'TB' ]
 then
@@ -51,6 +42,7 @@ echo "Done" > "$path/log/$f"
 echo "Node App Output :-"
 echo $nodeOut
 fi
+
 
 
 
