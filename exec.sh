@@ -9,9 +9,11 @@ a=`date --date "-$1 hours ago" +%d`
 b=`date --date "-$1 hours ago" +%m%Y`
 c=`date --date "-$1 hours ago" +%Y`
 d=`date --date "-$1 hours ago" +%b`
+echo "$a:$b:$c:$d"
 e="http://clists.nic.in/ddir/PDFCauselists/kerala/$c/$d/"
 f="013$a$b.pdf"
 g="$e$f"
+echo "$g"
 h=`curl -s -o /dev/null -w "%{response_code}" $g`
 if [ $h == '200' ] && [ ! -f "log/$f" ]
 then
