@@ -1,11 +1,11 @@
-$path="/home/ubuntu/Scrapper"
+path="/home/ubuntu/Scrapper"
 rm -R "$path/data"
 mkdir "$path/data"
 mkdir "$pathlog"
 host="http://keralalawjournal.com"
 
 
-$a=`curl $host/smsapi/jobs`
+a=`curl $host/smsapi/jobs`
 
 h=`curl -s -o /dev/null -w "%{response_code}" $a`
 if [ $h == '200' ] && [ ! -f "log/$f" ]
@@ -44,9 +44,3 @@ echo "Done" > "$path/log/$f"
 echo "Node App Output :-"
 echo $nodeOut
 fi
-
-
-
-
-
-
