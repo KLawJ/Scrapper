@@ -1,17 +1,13 @@
 //Init
 var validator = require('validator');
 var fs = require('fs');
-var host = "http:klawj.tk/";
-
-//State VARS
-var deliveryMode = process.argv[3];
 
 function prunePages(pages){
 	pages.forEach(function(item, index){
 		pages[index] = item
 			.replace(/\s*Contd\.*\d*\s*Court[\s|\-|]*\d*\w*\s*Page\s*\d*\s*\d*\/\d*\/\d*/gm,'\n')
 			.replace(/[^A-Za-z 0-9 \.,\?""!@#\$%\^&\*\(\)-_=\+;:<>\/\\\|\}\{\[\]`~\n]*/g, '')
-		//pages[index] = item.replace(/\n\s+[\w|\s|\-|\(|\)]+\n\s+\=+/g,'');
+			//pages[index] = item.replace(/\n\s+[\w|\s|\-|\(|\)]+\n\s+\=+/g,'');
 	});
 	return pages;
 }
@@ -26,7 +22,7 @@ function logPages(pages){
 function objectifyPages(pages){
 	var allCases = [];
 	pages.forEach(function(item, index){
-		try{
+		//try{
 			var page = item;
 			var entry = {};
 			entry['date'] =
@@ -37,6 +33,7 @@ function objectifyPages(pages){
 						.replace(/\w+\,\sthe/,'')
 					)
 			entry['judge'] = [];
+			try{
 			page
 				.split('Before :')[1]
 				.split(/(.*COURT.*)\(\w*\s\w*\)/i)[0]
@@ -50,22 +47,28 @@ function objectifyPages(pages){
 							)
 						);
 				})
-			entry['room'] =
-				validator.trim(
-					page
-						.split('Before :')[1]
-						.split(/(.*COURT.*)\(\w*\s\w*\)/)[1]
-						.replace(/[\r|\n|\\r|\\n]/g,'')
-					)
+			}catch(e){}
+			try{
+				entry['room'] =
+					validator.trim(
+						page
+							.split('Before :')[1]
+							.split(/(.*COURT.*)\(\w*\s\w*\)/)[1]
+							.replace(/[\r|\n|\\r|\\n]/g,'')
+						)
+			}
+			catch(e){}
 			/*if(entry['room'].indexOf(' - ')!=-1)
 				entry['room'] = entry['room'].split(' - ')[1];
 			*/
 			var casesF = "";
 			var caseFS = "";
+			try{
 			var cases = page
 				.split('Before :')[1]
 				.split(/\=+/);
-
+			}catch(e){}
+			try{
 			cases = cases
 				.splice(1, cases.length)
 				.join('')
@@ -147,16 +150,17 @@ function objectifyPages(pages){
 					caseIQ['resp'] = validator.trim( tempChar.split('/')[0] );
 					caseIQ['defe'] = validator.trim( tempChar.split('/')[1] );
 				}catch(e){
-					console.log(e);
+					//console.log(e);
 				}
 				casesF += validator.trim(item) + '\n>>\n';
 				allCases.push(caseIQ);
 			})
+			}catch(e){}
 				fs.writeFileSync('data/'+index+'.casesF', casesF);
 				fs.writeFileSync('data/'+index+'.caseFS', 	caseFS);
-		}catch(e){
+		/*}catch(e){
 			console.log(e)
-		}
+		}*/
 	});
 	return allCases;
 }
@@ -214,9 +218,9 @@ function requestTBtDelivery(number, body){
 function findAdvocateResultBuilder(allCases, user, inputInfo){
 	var output = {};
 	var count = 0;
-	var text = user.advcid + '\n';
+	var text = user.identifier + '\n';
 	    allCases.forEach(function(cause, causeIndex){
-	    	if(cause['advs'].indexOf(user.advcid)!=-1){
+	    	if(cause['advs'].indexOf(user.identifier)!=-1){
 	    		count ++;
 	    		text += compress(cause.room, inputInfo.reps,false) + '-'
 	    		cause.judge.forEach(function(item, index){
@@ -229,9 +233,10 @@ function findAdvocateResultBuilder(allCases, user, inputInfo){
 	    	}
 	    })
 	if(count == 0)
-		text += '\nNo records found. \nPlease check with the entire Causelist.'
+		text = 'No records found for '+text+'Please check with the entire Causelist.'
 	else
-		text += '\nFor a more detailed list, please visit, http://klj.io/468561';
+		text = count + ' Cases found for ' + text;
+	text += '\n-Kerala Law Journal (Indian Cases Online)';
 	//text += '\nPlease ignore the previous SMS.';
 	output['from']='KLJICO';
 	output['text']=text;
@@ -292,7 +297,7 @@ function netwrokQuery(findings, reqURL){
 
 function main(){
 	var input = fs.readFileSync('data/'+process.argv[2],'ASCII');
-	var pages = input.split(/\t*IN \w* \w* COURT OF \w* AT \w*/g);
+	var pages = input.split(/IN(\s|\n)*THE(\s|\n)*HIGH(\s|\n)*COURT(\s|\n)*OF(\s|\n)*KERALA(\s|\n)*AT(\s|\n)*ERNAKULAM/g);
 	var allCases = logCases(
 		objectifyPages(
 			logPages(
